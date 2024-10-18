@@ -66,10 +66,6 @@ $$
 
 ---
 
-Here’s a revised version of the **Software Architecture** section:
-
----
-
 ## Software Architecture
 
 ### Python Script:
