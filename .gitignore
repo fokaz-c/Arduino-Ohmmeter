@@ -1,0 +1,35 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# TypeScript build output
+dist/
+*.js
+*.js.map
+*.d.ts
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment variable files
+.env
+
+# TypeScript build files
+*.tsbuildinfo
+
+# IDE or editor specific files
+.vscode/
+.idea/
+*.iml
+
+# ESLint cache
+.eslintcache
+
+# Ignore the output of 'npm pack'
+*.tgz
+
+# Ignore lockfile backups
+*.lock
+
