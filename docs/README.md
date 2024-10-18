@@ -103,10 +103,11 @@ The system uses two tables to store the measured data:
 ---
 
 ## Data Flow
-1. **Arduino** measures the voltage and sends it via Bluetooth to the Python script.
-2. **Python Script** retrieves the voltage data and sends it to the Node.js server.
-3. **Node.js Server** calculates the resistance, stores the voltage and resistance data in the database, and serves it to the React app.
-4. **React App** displays the real-time or historical data for user interaction and visualization.
+
+1. **Data Acquisition**: The Arduino measures the voltage across the resistor and transmits this data via Bluetooth to the Python script.
+2. **Data Retrieval**: The Python script collects the voltage data from the Arduino and forwards it to the Node.js server.
+3. **Data Storage**: The Node.js server stores the received voltage data and the resistance values calculated directly on the Arduino board in the database, preparing the data for access.
+4. **Data Presentation**: The React app retrieves the processed data from the Node.js server, displaying real-time and historical measurements for user interaction and visualization.
 
 ---
 
