@@ -73,4 +73,3 @@ You can modify the configuration in the following files:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-```
