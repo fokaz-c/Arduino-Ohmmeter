@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { FinalOutput } from "../models/FinalOutput";
+import { HardwareOutput } from "../models/HardwareOutput";
 
 
 export function getUsers(request: Request, response: Response){
@@ -9,5 +10,6 @@ export function getUsers(request: Request, response: Response){
 }
 
 export function getUserById(request: Request, response: Response) {
-  response.send([{}]); 
+  const y:HardwareOutput = new HardwareOutput();
+  response.send(y);
 }
