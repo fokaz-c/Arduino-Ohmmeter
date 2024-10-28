@@ -3,10 +3,10 @@ export class FinalOutput {
     DateTime: Date;
     HardwareOutputId: number;
     
-    constructor() {
-        this.ID = 0;
-        this.DateTime= new Date(2018, 0O5, 0O5, 17, 23, 42, 11);  
-        this.HardwareOutputId=0;
+    constructor(ID: number, DateTime: Date,HardwareOutputId: number) {
+        this.ID = ID;
+        this.DateTime= DateTime;  
+        this.HardwareOutputId=HardwareOutputId;
       }
 }
 

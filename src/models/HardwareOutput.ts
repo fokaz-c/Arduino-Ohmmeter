@@ -3,9 +3,9 @@ export class HardwareOutput {
     OutputVoltage: number;
     Resistance: number;
     
-    constructor() {
-        this.ID = 0;
-        this.OutputVoltage= 0;
-        this.Resistance=0;
+    constructor(ID: number,OutputVoltage: number,Resistance: number) {
+        this.ID = ID;
+        this.OutputVoltage= OutputVoltage;
+        this.Resistance=Resistance;
       }
 }
