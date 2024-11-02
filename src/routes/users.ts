@@ -1,10 +1,10 @@
+// routes/users.ts
 import { Router } from "express";
-import { getUserById, getUsers } from "../handlers/users";
-
+import { getRes, getUserById } from "../handlers/users";
 
 const router = Router();
 
-router.get('/', getUsers);
-router.get("/id:", getUserById);
+router.get('/res', getRes);
+router.get("/:id", getUserById);
 
 export default router;
