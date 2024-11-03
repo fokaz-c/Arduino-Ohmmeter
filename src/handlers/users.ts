@@ -1,6 +1,6 @@
 // handlers/users.ts
 import { Request, Response } from "express";
-import { FinalOutput } from "../models/FinalOutput";
+//import { FinalOutput } from "../models/FinalOutput";
 import { HardwareOutput } from "../models/HardwareOutput";
 import { HardwareService } from "../services/HardwareService";
 
@@ -37,7 +37,6 @@ export const getRes = async (req: Request, res: Response): Promise<void> => {
 
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params.id;
         const y = new HardwareOutput(0, 0, 0);
         res.json(y);
     } catch (error) {
