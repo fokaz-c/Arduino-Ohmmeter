@@ -2,11 +2,8 @@ import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
 import { GlobalEmitter } from '../main';
 import { DataRecievedEvent } from '../models/Events';
+import { SensorData } from '../interfaces/interfaces';
 
-export interface SensorData {
-    resistance: number;
-    voltage: number;
-}
 
 export class HardwareService {
     private serialPort: SerialPort;
