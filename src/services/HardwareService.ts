@@ -1,5 +1,7 @@
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
+import { GlobalEmitter } from '../main';
+import { DataRecievedEvent } from '../models/Events';
 
 export interface SensorData {
     resistance: number;
@@ -43,6 +45,9 @@ export class HardwareService {
     }
 
     public getLatestData(): SensorData | null {
+        if(this.latestData !=null){
+        GlobalEmitter.emit(DataRecievedEvent.toString(),new DataRecievedEvent(this.latestData));
+    }
         return this.latestData;
     }
 }

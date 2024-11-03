@@ -6,7 +6,6 @@ import { HardwareService } from "../services/HardwareService";
 
 const hardwareService = new HardwareService('COM4', 9600);
 
-// Define RequestHandler types for better type safety
 export const getRes = async (req: Request, res: Response): Promise<void> => {
     try {
         const sensorData = hardwareService.getLatestData();
