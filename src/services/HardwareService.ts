@@ -1,8 +1,8 @@
-import { SerialPort } from 'serialport';
-import { ReadlineParser } from '@serialport/parser-readline';
-import { GlobalEmitter } from '../main';
-import { DataRecievedEvent } from '../models/Events';
-import { SensorData } from '../interfaces/interfaces';
+import {SerialPort} from 'serialport';
+import {ReadlineParser} from '@serialport/parser-readline';
+import {GlobalEmitter} from '../main';
+import {DataRecievedEvent} from '../models/Events';
+import {SensorData} from '../models/SensorData';
 
 
 export class HardwareService {
@@ -15,7 +15,7 @@ export class HardwareService {
             path: port,
             baudRate: baudRate
         });
-        this.parser = new ReadlineParser({ delimiter: '\n' });
+        this.parser = new ReadlineParser({delimiter: '\n'});
 
         this.serialPort.pipe(this.parser);
         this.setupListeners();
@@ -42,9 +42,12 @@ export class HardwareService {
     }
 
     public getLatestData(): SensorData | null {
-        if(this.latestData !=null){
-        GlobalEmitter.emit(DataRecievedEvent.toString(),new DataRecievedEvent(this.latestData));
-    }
+        if (this.latestData != null) {
+            console.log("Emitter fired with: " + this.latestData);
+            GlobalEmitter.emit(DataRecievedEvent.toString(), new DataRecievedEvent(this.latestData));
+        }
         return this.latestData;
     }
 }
+
+export {SensorData};

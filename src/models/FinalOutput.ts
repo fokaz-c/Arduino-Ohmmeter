@@ -1,18 +1,5 @@
-export class FinalOutput {
+export interface FinalOutput {
     ID: number;
     DateTime: Date;
-    HardwareOutputId: number;
-    
-    constructor(ID: number, DateTime: Date,HardwareOutputId: number) {
-        this.ID = ID;
-        this.DateTime= DateTime;  
-        this.HardwareOutputId=HardwareOutputId;
-      }
+    HardwareOutputID: number;
 }
-
-// const x:FinalOutput = new FinalOutput();
-// console.log(x);
-
-
-
-

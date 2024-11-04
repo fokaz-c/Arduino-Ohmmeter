@@ -1,8 +1,12 @@
 import express, { Request, Response } from 'express';
-import usersRouter from './routes/users';
+import usersRouter from './routes/ResistanceRoutes';
 import cors from 'cors';
 import {EventEmitter} from 'node:events'
 import { DataRecievedEvent } from './models/Events';
+import { IHardwareRepository } from './interfaces/IHardwareRepository';
+import { HardwareRepository } from './repository/HardwareRepository';
+import pool from './database/database';
+import { DataService } from './services/DataService';
 
 export const GlobalEmitter:EventEmitter = new EventEmitter();
 
@@ -11,7 +15,8 @@ GlobalEmitter.addListener(DataRecievedEvent.toString(),(data:DataRecievedEvent)=
   console.log(data.getData());
 });
 
-
+const repository:IHardwareRepository = new HardwareRepository(pool);
+const dataService:DataService = new DataService(repository);
 
 const app = express();
 const PORT = 8080;

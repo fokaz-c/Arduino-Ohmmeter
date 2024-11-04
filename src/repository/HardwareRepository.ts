@@ -1,20 +1,24 @@
-import { Pool, PoolConnection, ResultSetHeader } from 'mysql2/promise';
-import { HardwareOutput } from "../models/HardwareOutput";
-import { FinalOutput } from "../models/FinalOutput";
+import {Pool, PoolConnection, ResultSetHeader, RowDataPacket} from 'mysql2/promise';
+import {HardwareOutput} from "../models/HardwareOutput";
+import {FinalOutput} from "../models/FinalOutput";
+import {IHardwareRepository} from "../interfaces/IHardwareRepository";
 
- import { IHardwareRepository } from "../repository/IHardwareRepository";
+interface ReadingRow extends RowDataPacket {
+    ID: number; // This should match the ID type from your FinalOutput
+    outputVoltage: number;
+    resistance: number;
+    final_output_id: number;
+    DateTime: Date;
+}
 
-
- export class HardwareRepository implements IHardwareRepository {
+export class HardwareRepository implements IHardwareRepository {
     private pool: Pool;
 
     constructor(pool: Pool) {
         this.pool = pool;
     }
 
-    private async withTransaction<T>(
-        callback: (connection: PoolConnection) => Promise<T>
-    ): Promise<T> {
+    private async withTransaction<T>(callback: (connection: PoolConnection) => Promise<T>): Promise<T> {
         const connection = await this.pool.getConnection();
         try {
             await connection.beginTransaction();
@@ -23,41 +27,57 @@ import { FinalOutput } from "../models/FinalOutput";
             return result;
         } catch (error) {
             await connection.rollback();
-            throw error; // Re-throwing error for handling upstream
+            throw error;
         } finally {
             connection.release();
         }
     }
 
-    async saveHardwareOutput(data: Omit<HardwareOutput, 'id'>): Promise<number> {
-        const [result] = await this.pool.execute<ResultSetHeader>(
-            'INSERT INTO hardware_output (outputVoltage, resistance) VALUES (?, ?)',
-            [data.OutputVoltage, data.Resistance]
-        );
-        return result.insertId; // Return the ID of the newly inserted record
+    async saveHardwareOutput(data: Omit<HardwareOutput, 'ID'>): Promise<number> {
+        try {
+            const [result] = await this.pool.execute<ResultSetHeader>(
+                'INSERT INTO hardware_output (outputVoltage, resistance) VALUES (?, ?)',
+                [data.OutputVoltage, data.Resistance]
+            );
+            return result.insertId; // Ensure this matches your database's insert return type
+        } catch (error) {
+            console.error('Error saving hardware output:', error); // Log the error
+            throw error;
+        }
     }
-    
 
     async saveFinalOutput(hardwareOutputId: number): Promise<void> {
-        await this.pool.execute(
-            'INSERT INTO finalOutput (hardware_output_id) VALUES (?)',
-            [hardwareOutputId]
-        );
+        try {
+            await this.pool.execute(
+                'INSERT INTO finalOutput (hardware_output_id) VALUES (?)',
+                [hardwareOutputId]
+            );
+        } catch (error) {
+            console.error('Error saving final output:', error); // Log the error
+            throw error;
+        }
     }
 
-    async getReadings(
-        limit: number = 100
-    ): Promise<(HardwareOutput & FinalOutput)[]> {
-        const [rows] = await this.pool.execute(`
-            SELECT
-                ho.*,
-                fo.DateTime,
-                fo.id as final_output_id
+    async getReadings(limit: number = 100): Promise<(HardwareOutput & FinalOutput)[]> {
+        const [rows] = await this.pool.query<ReadingRow[]>(`
+            SELECT 
+                ho.ID,          // Use uppercase ID to match your table
+                ho.outputVoltage,
+                ho.resistance,
+                fo.id AS final_output_id,
+                fo.DateTime
             FROM hardware_output ho
-            JOIN finalOutput fo ON ho.id = fo.hardware_output_id
+            INNER JOIN finalOutput fo ON ho.id = fo.hardware_output_id
             ORDER BY fo.DateTime DESC
             LIMIT ?
-        `, [limit]);
-        return rows as (HardwareOutput & FinalOutput)[]; // Cast the result to the combined type
+        `, [limit]); // Use parameterized queries for the limit
+
+        return rows.map(row => ({
+            ID: row.ID,
+            OutputVoltage: row.outputVoltage,
+            Resistance: row.resistance,
+            HardwareOutputID: row.final_output_id,
+            DateTime: row.DateTime
+        })) as (HardwareOutput & FinalOutput)[]; // Ensure this cast is correct
     }
 }
