@@ -1,4 +1,3 @@
-// interfaces/IHardwareRepository.ts
 import {HardwareOutput} from "../models/HardwareOutput";
 import {FinalOutput} from "../models/FinalOutput";
 
@@ -7,5 +6,5 @@ export interface IHardwareRepository {
 
     saveFinalOutput(hardwareOutputId: number): Promise<void>;
 
-    getReadings(limit: number): Promise<(HardwareOutput & FinalOutput)[]>; // Combine HardwareOutput and FinalOutput
+    getReadings(limit: number): Promise<(HardwareOutput & FinalOutput)[]>; 
 }

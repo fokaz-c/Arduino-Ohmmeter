@@ -3,7 +3,7 @@ import {IHardwareRepository} from "../interfaces/IHardwareRepository";
 import {GlobalEmitter} from "../main";
 import {DataRecievedEvent} from '../models/Events';
 import {HardwareOutput} from "../models/HardwareOutput";
-import {FinalOutput} from "../models/FinalOutput";
+import { formatDateTime } from "./DateHelper";
 
 export class DataService implements IDataService {
     private readonly repository: IHardwareRepository;
@@ -13,11 +13,12 @@ export class DataService implements IDataService {
         GlobalEmitter.on(DataRecievedEvent.toString(), this.handleGetSensorData.bind(this));
     }
 
-    async getLatestReadings(limit: number = 10): Promise<SensorData[]> {
-        const readings = await this.repository.getReadings(limit);
+    static async getLatestReadingsStatic(repository: IHardwareRepository, limit: number = 10): Promise<SensorData[]> {
+        const readings = await repository.getReadings(limit);
         return readings.map(reading => ({
             voltage: reading.OutputVoltage,
             resistance: reading.Resistance,
+            dateTime: formatDateTime(reading.DateTime.toString())
         }));
     }
 
@@ -27,6 +28,7 @@ export class DataService implements IDataService {
     }
 
 
+    
     async saveReading(data: SensorData): Promise<void> {
         try {
             const hardwareOutputId = await this.repository.saveHardwareOutput({

@@ -1,10 +1,11 @@
-// handlers/users.ts
 import {Request, Response} from "express";
-//import { FinalOutput } from "../models/FinalOutput";
-import {HardwareOutput} from "../models/HardwareOutput";
 import {HardwareService} from "../services/HardwareService";
+import { DataService } from "../services/DataService";
+import { repository } from "../main";
+
 
 const hardwareService = new HardwareService('COM4', 9600);
+
 
 export const getRes = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -34,14 +35,16 @@ export const getRes = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-// export const getUserById = async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const y = new HardwareOutput(0, 0, 0);
-//         res.json(y);
-//     } catch (error) {
-//         res.status(500).json({
-//             error: 'Failed to get user by ID',
-//             message: error instanceof Error ? error.message : 'Unknown error'
-//         });
-//     }
-// };
+export const getHistoricalData = async (req: Request, res: Response): Promise<void> => {
+    try {
+
+        const historicalReadings = await DataService.getLatestReadingsStatic(repository);
+        res.status(200).json(historicalReadings);
+    } catch (error) {
+
+        console.error('Error fetching historical data:', error);
+
+        const errorMessage = (error as { message?: string }).message || 'Unknown error occurred';
+        res.status(500).json({ message: 'Error fetching historical data', error: errorMessage });
+    }
+};

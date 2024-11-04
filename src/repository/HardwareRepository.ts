@@ -4,12 +4,13 @@ import {FinalOutput} from "../models/FinalOutput";
 import {IHardwareRepository} from "../interfaces/IHardwareRepository";
 
 interface ReadingRow extends RowDataPacket {
-    ID: number; // This should match the ID type from your FinalOutput
+    ID: number;
     outputVoltage: number;
     resistance: number;
     final_output_id: number;
     DateTime: Date;
 }
+
 
 export class HardwareRepository implements IHardwareRepository {
     private pool: Pool;
@@ -39,29 +40,36 @@ export class HardwareRepository implements IHardwareRepository {
                 'INSERT INTO hardware_output (outputVoltage, resistance) VALUES (?, ?)',
                 [data.OutputVoltage, data.Resistance]
             );
-            return result.insertId; // Ensure this matches your database's insert return type
+            return result.insertId;
         } catch (error) {
-            console.error('Error saving hardware output:', error); // Log the error
+            console.error('Error saving hardware output:', error);
             throw error;
         }
     }
-
+    
     async saveFinalOutput(hardwareOutputId: number): Promise<void> {
         try {
+            const nowUtc = new Date();
+            const istOffsetInMillis = 5.5 * 60 * 60 * 1000; 
+            const istDateTime = new Date(nowUtc.getTime() + istOffsetInMillis);
+    
+            const dateTimeNow = istDateTime.toISOString().slice(0, 19).replace('T', ' ');
+    
             await this.pool.execute(
-                'INSERT INTO finalOutput (hardware_output_id) VALUES (?)',
-                [hardwareOutputId]
+                'INSERT INTO finalOutput (DateTime, hardware_output_id) VALUES (?, ?)',
+                [dateTimeNow, hardwareOutputId]
             );
         } catch (error) {
-            console.error('Error saving final output:', error); // Log the error
+            console.error('Error saving final output:', error);
             throw error;
         }
     }
+    
 
     async getReadings(limit: number = 100): Promise<(HardwareOutput & FinalOutput)[]> {
         const [rows] = await this.pool.query<ReadingRow[]>(`
             SELECT 
-                ho.ID,          // Use uppercase ID to match your table
+                ho.id,         
                 ho.outputVoltage,
                 ho.resistance,
                 fo.id AS final_output_id,

@@ -1,10 +1,9 @@
-// routes/users.ts
 import {Router} from "express";
-import {getRes} from "../handlers/ResistanceHandler";
+import {getRes,getHistoricalData} from "../handlers/ResistanceHandler";
 
 const router = Router();
 
 router.get('/res', getRes);
-//router.get("/:id", getUserById);
+router.get("/history", getHistoricalData);
 
 export default router;
