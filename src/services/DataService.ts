@@ -10,7 +10,6 @@ export class DataService implements IDataService {
 
     constructor(repository: IHardwareRepository) {
         this.repository = repository;
-        console.log("Setting up event listener for DataRecievedEvent");
         GlobalEmitter.on(DataRecievedEvent.toString(), this.handleGetSensorData.bind(this));
     }
 
@@ -24,26 +23,20 @@ export class DataService implements IDataService {
 
     public async handleGetSensorData(event: DataRecievedEvent): Promise<void> {
         const sensorData: SensorData = event.getData();
-        console.log('Received sensor data:', sensorData);
         await this.saveReading(sensorData);
     }
 
 
     async saveReading(data: SensorData): Promise<void> {
         try {
-            console.log('Saving reading:', data);
             const hardwareOutputId = await this.repository.saveHardwareOutput({
                 OutputVoltage: data.voltage,
                 Resistance: data.resistance,
             } as Omit<HardwareOutput, 'ID'>);
 
-            console.log('Saved hardware output with ID:', hardwareOutputId);
             await this.repository.saveFinalOutput(hardwareOutputId);
 
-            // Remove this line to prevent the recursive loop
-            // GlobalEmitter.emit(DataRecievedEvent.toString(), new DataRecievedEvent(data));
         } catch (error) {
-            console.error('Error saving reading:', error);
             throw error;
         }
     }

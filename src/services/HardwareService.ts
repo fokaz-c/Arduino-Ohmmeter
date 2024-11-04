@@ -26,7 +26,6 @@ export class HardwareService {
             try {
                 const parsedData = JSON.parse(data) as SensorData;
                 this.latestData = parsedData;
-                //console.log('Received data from Arduino:', parsedData);
             } catch (error) {
                 console.error('Error parsing JSON:', error);
             }
@@ -43,7 +42,6 @@ export class HardwareService {
 
     public getLatestData(): SensorData | null {
         if (this.latestData != null) {
-            console.log("Emitter fired with: " + this.latestData);
             GlobalEmitter.emit(DataRecievedEvent.toString(), new DataRecievedEvent(this.latestData));
         }
         return this.latestData;

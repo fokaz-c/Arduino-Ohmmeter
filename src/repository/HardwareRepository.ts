@@ -70,7 +70,7 @@ export class HardwareRepository implements IHardwareRepository {
             INNER JOIN finalOutput fo ON ho.id = fo.hardware_output_id
             ORDER BY fo.DateTime DESC
             LIMIT ?
-        `, [limit]); // Use parameterized queries for the limit
+        `, [limit]);
 
         return rows.map(row => ({
             ID: row.ID,
@@ -78,6 +78,6 @@ export class HardwareRepository implements IHardwareRepository {
             Resistance: row.resistance,
             HardwareOutputID: row.final_output_id,
             DateTime: row.DateTime
-        })) as (HardwareOutput & FinalOutput)[]; // Ensure this cast is correct
+        })) as (HardwareOutput & FinalOutput)[];
     }
 }
