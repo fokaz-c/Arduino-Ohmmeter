@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto-Ranging Ohmmeter</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="history.html">Data History</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+
+  <main class="container">
+    <h1>Arduino Auto-Ranging Ohmmeter</h1>
+
+    <div class="container2">
+      <!-- Display elements for recent data -->
+      <div class="resistance">
+        <div id="resistanceDisplay">Resistance: -- Ω</div>
+      </div>
+      <div id="voltageDisplay">Voltage: -- V</div>
+      <div id="dateTimeDisplay">Date & Time: --</div>
+    </div>
+
+    <!-- Button to trigger data fetch -->
+    <button onclick="fetchRecentData()">Get Recent Data</button>
+
+    <!-- List to display additional fetched data, if necessary -->
+    <ul id="historyList">
+      <!-- Data will be dynamically inserted here -->
+    </ul>
+  </main>
+
+  <!-- JavaScript file at the end of body -->
+  <script src="main.js" charset="utf-8"></script>
+</body>
+
+</html>
