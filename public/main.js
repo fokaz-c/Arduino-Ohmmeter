@@ -1,5 +1,6 @@
+let refreshInterval;
+
 async function fetchRecentData() {
-  let refreshInterval;
   try {
     const response = await fetch("http://192.168.153.22:8080/api/res");
     if (!response.ok) {
@@ -7,7 +8,7 @@ async function fetchRecentData() {
     }
 
     const data = await response.json();
-    // Assume the data is an object with fields "Resistance" and "Voltage"
+    // Assume the data is an object or array with fields "Resistance" and "Voltage"
     const recentEntry = Array.isArray(data) && data.length ? data[data.length - 1] : data;
 
     const voltageDisplay = document.getElementById("voltageDisplay");
@@ -41,10 +42,24 @@ async function fetchRecentData() {
 
 function saveToHistory(entry) {
   const history = JSON.parse(localStorage.getItem("dataHistory")) || [];
-  // Add date and time for reference in the history entry
-  entry.dateTime = new Date().toLocaleString();
-  history.push(entry);;LKJHGCX
+  entry.dateTime = new Date().toLocaleString(); // Add date and time for history
+  history.push(entry);
   localStorage.setItem("dataHistory", JSON.stringify(history));
+}
+
+function startFetchingAndRefreshing() {
+  document.getElementById('status').innerText = "Fetching data and starting the 1-minute refresh interval.";
+  fetchRecentData(); // Fetch data immediately when the button is clicked
+
+  // Start the interval to fetch data every 1 minute (60000 ms)
+  refreshInterval = setInterval(fetchRecentData, 60000);
+
+  // Stop the interval after 5 minutes (300000 ms)
+  setTimeout(function() {
+    clearInterval(refreshInterval);
+    document.getElementById('status').innerText = "The auto-refresh has stopped after 5 minutes.";
+    console.log("Auto-refresh stopped.");
+  }, 300000); // Stops after 5 minutes
 }
 
 // Ensure the function runs only after the DOM is fully loaded
