@@ -1,20 +1,26 @@
 /* Body styling */
+*{  margin: 0;
+    padding: 0;
+    font-family:"instrument+sans","Inknut+Antiqua";
+}
+
+
 body {
-    background: linear-gradient(90deg, #020024 0%, #090979 35%, #00d4ff 100%);
-    font-family: Arial, sans-serif;
+    background-color: #07051B;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-    color: #ffffff;
+    margin: 1px;
+    color: #D7DFA3;
+    font-size: 25px;
 }
 
 /* Navbar styling */
 nav {
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background:linear-gradient(#15A8B8,#0b374d,#07051B);
+    box-shadow:0 0.5px #0E5165;
     padding: 15px 0;
 }
 
@@ -27,32 +33,35 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0 20px;
+    margin: 5px;
 }
 
 nav ul li a {
-    color: #ffffff;
+    margin-right: 100px;
+    margin-left: 200px;
+    align-items: center;
+    font-size: small;
+    color: #D7DFA3;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 24px;
     padding: 8px 15px;
     transition: background 0.3s, color 0.3s;
     border-radius: 5px;
 }
 
 nav ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    color: #000000;
+ color: #9bf5ff;
 }
 
 /* Container styling */
 .container {
-    background: rgba(255, 255, 255, 0.1);
+    background-image: linear-gradient(#15A8B8,#0E5165,#0B3449,#07051B);
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 1px 2px #15A8B8;
     margin-top: 40px;
     width: 90%;
     max-width: 500px;
@@ -61,18 +70,17 @@ nav ul li a:hover {
 
 /* Title styling */
 .container h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: #c8d7e9;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    font-size: 64px;
+    margin-bottom: 10px;
+    color: #07051B;
 }
 
 /* Resistance value display */
 #resistanceValue {
-    font-size: 2.5rem;
+    font-size: 20px;
     font-weight: bold;
     color: #ebebeb;
-    margin-top: 20px;
+    margin-top: 10px;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
 }
 
@@ -82,8 +90,8 @@ button {
     margin-top: 25px;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #ffffff;
-    background-color: #00d4ff;
+    color: #07051B;
+    background-color: #14A1B2;
     border: none;
     border-radius: 25px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -95,7 +103,7 @@ button {
 button:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    background-color: #00b3e6;
+    background-color: #D7DFA3;
 }
 
 /* Button active effect */
